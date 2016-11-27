@@ -92,19 +92,6 @@ public class Server implements ServerStartStopInterface {
                 clientMessages.getValue().add(message);
                 System.out.println(clientMessages.getValue());
             }
-//            System.out.println("Broadcasting: " + message);
-//            PrintWriter out;
-//            for (Socket socket : clientsList) {
-//                System.out.println("Sending to " + socket.getInetAddress());
-//                try {
-//                    out = new PrintWriter(socket.getOutputStream());
-//                    out.println(message);
-//                    out.flush();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-
         }
     }
 
@@ -158,7 +145,8 @@ public class Server implements ServerStartStopInterface {
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+//                e.printStackTrace();
+                System.out.print("Client disconnected");
             } finally {
                 System.out.println("Closing client socket");
                 if (in != null) in.close();

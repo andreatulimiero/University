@@ -22,7 +22,7 @@ public class ChatGUI implements ReceiveMessageInterface{
         mainInterface = new MainInterface();
         mainFrame.getContentPane().add(mainInterface);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        mainFrame.setSize(500, 500);
+        mainFrame.pack();
         mainFrame.setLocation(dim.width/2-mainFrame.getSize().width/2, dim.height/2-mainFrame.getSize().height/2);
         mainFrame.setVisible(true);
     }
@@ -40,21 +40,21 @@ public class ChatGUI implements ReceiveMessageInterface{
 
         private static final int TEXT_SIZE = 20;
 
-        private JTextArea messagesLabel;
+        private JTextArea messagesTextArea;
 
         public MainInterface() {
             this.setLayout(new BorderLayout());
-            messagesLabel = new JTextArea();
-            messagesLabel.setEditable(false);
-            messagesLabel.setFont(new Font("sans-serif", Font.PLAIN, TEXT_SIZE));
-            messagesLabel.setText("Text received here !");
-            messagesLabel.setBorder(new EmptyBorder(30, 30, 30, 30));
-            this.add(messagesLabel, BorderLayout.NORTH);
+            messagesTextArea = new JTextArea();
+            messagesTextArea.setEditable(false);
+            messagesTextArea.setFont(new Font("sans-serif", Font.PLAIN, TEXT_SIZE));
+            messagesTextArea.setBorder(new EmptyBorder(30, 30, 30, 30));
+            messagesTextArea.setPreferredSize(new Dimension(600, 600));
+            this.add(messagesTextArea, BorderLayout.NORTH);
             this.add(new MessageBar(), BorderLayout.SOUTH);
         }
 
         protected void addMessage(String message){
-            messagesLabel.setText(messagesLabel.getText()+ "\n" + message);
+            messagesTextArea.setText(messagesTextArea.getText()+ "\n" + message);
         }
 
         private class MessageBar extends JPanel{
@@ -64,14 +64,17 @@ public class ChatGUI implements ReceiveMessageInterface{
             private static final int TEXT_SIZE = 20;
 
             public MessageBar() {
-                this.setLayout(new GridLayout(1, 2));
+                this.setLayout(new FlowLayout());
 
                 messageTextField = new JTextField();
                 messageTextField.setFont(new Font("sans-serif", Font.PLAIN, TEXT_SIZE));
+                messageTextField.setPreferredSize(new Dimension(500, 50));
                 messageTextField.setBorder(new EmptyBorder(10, 10, 10, 10));
                 this.add(messageTextField, 0);
                 sendButton = new JButton("Send");
+                sendButton.setPreferredSize(new Dimension(100, 50));
                 sendButton.addActionListener(e -> attemptSendMessage());
+                sendButton.setFont(new Font("sans-serif", Font.PLAIN, TEXT_SIZE));
                 this.add(sendButton, 1);
             }
 

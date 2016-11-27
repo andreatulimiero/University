@@ -14,7 +14,9 @@ public class ChatClient {
             ChatGUI chatGUI = new ChatGUI();
             client.setReceiveMessageInterface(chatGUI);
             chatGUI.setSendMessageInterface(client);
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) {
+            System.out.println("Impossible to connect to server");
+        }
 
     }
 
