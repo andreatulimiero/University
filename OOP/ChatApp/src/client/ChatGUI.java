@@ -1,6 +1,7 @@
 package client;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
@@ -48,6 +49,7 @@ public class ChatGUI implements ReceiveMessageInterface{
             messagesTextArea.setEditable(false);
             messagesTextArea.setFont(new Font("sans-serif", Font.PLAIN, TEXT_SIZE));
             messagesTextArea.setBorder(new EmptyBorder(30, 30, 30, 30));
+            messagesTextArea.setBackground(new Color(100, 255, 218));
             messagesTextArea.setPreferredSize(new Dimension(600, 600));
             this.add(messagesTextArea, BorderLayout.NORTH);
             this.add(new MessageBar(), BorderLayout.SOUTH);
@@ -75,6 +77,8 @@ public class ChatGUI implements ReceiveMessageInterface{
                 sendButton.setPreferredSize(new Dimension(100, 50));
                 sendButton.addActionListener(e -> attemptSendMessage());
                 sendButton.setFont(new Font("sans-serif", Font.PLAIN, TEXT_SIZE));
+                sendButton.setBackground(new Color(224, 242, 241));
+                sendButton.setForeground(new Color(0, 77, 64));
                 this.add(sendButton, 1);
             }
 
