@@ -145,7 +145,6 @@ public class Server implements ServerStartStopInterface {
                 }
 
             } catch (IOException e) {
-//                e.printStackTrace();
                 System.out.print("Client disconnected");
             } finally {
                 System.out.println("Closing client socket");
