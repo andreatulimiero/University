@@ -1,13 +1,14 @@
 package client;
 
 import javax.swing.*;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
  * Created by Utente on 11/26/2016.
  */
-public class ChatGUI implements ReceiveMessageInterface{
+public class ChatGUI extends JFrame implements ReceiveMessageInterface{
 
     private static final String WINDOW_TITLE = "Client";
 
@@ -15,16 +16,15 @@ public class ChatGUI implements ReceiveMessageInterface{
     private MainInterface mainInterface;
 
     public ChatGUI() {
-
-        JFrame mainFrame = new JFrame(WINDOW_TITLE);
-        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        super(WINDOW_TITLE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         mainInterface = new MainInterface();
-        mainFrame.getContentPane().add(mainInterface);
+        this.getContentPane().add(mainInterface);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        mainFrame.pack();
-        mainFrame.setLocation(dim.width/2-mainFrame.getSize().width/2, dim.height/2-mainFrame.getSize().height/2);
-        mainFrame.setVisible(true);
+        this.pack();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        this.setVisible(true);
     }
 
     public void setSendMessageInterface(SendMessageInterface sendMessageInterface) {
@@ -48,6 +48,7 @@ public class ChatGUI implements ReceiveMessageInterface{
             messagesTextArea.setEditable(false);
             messagesTextArea.setFont(new Font("sans-serif", Font.PLAIN, TEXT_SIZE));
             messagesTextArea.setBorder(new EmptyBorder(30, 30, 30, 30));
+            messagesTextArea.setBackground(new Color(100, 255, 218));
             messagesTextArea.setPreferredSize(new Dimension(600, 600));
             this.add(messagesTextArea, BorderLayout.NORTH);
             this.add(new MessageBar(), BorderLayout.SOUTH);
@@ -75,6 +76,8 @@ public class ChatGUI implements ReceiveMessageInterface{
                 sendButton.setPreferredSize(new Dimension(100, 50));
                 sendButton.addActionListener(e -> attemptSendMessage());
                 sendButton.setFont(new Font("sans-serif", Font.PLAIN, TEXT_SIZE));
+                sendButton.setBackground(new Color(224, 242, 241));
+                sendButton.setForeground(new Color(0, 77, 64));
                 this.add(sendButton, 1);
             }
 

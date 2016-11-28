@@ -1,5 +1,6 @@
 package client;
 
+import javax.swing.*;
 import java.io.IOException;
 
 /**
@@ -7,17 +8,34 @@ import java.io.IOException;
  */
 public class ChatClient {
 
+    private static ChatGUI chatGUI;
+    private static final String RETRY_CONNECTION_MESSAGE = "Impossible connecting to server\nRetry?";
+
     public static void main(String[] args){
 
+        chatGUI = new ChatGUI();
+        attemptConnection();
+
+    }
+
+    private static void attemptConnection(){
         try {
             Client client = new Client();
-            ChatGUI chatGUI = new ChatGUI();
             client.setReceiveMessageInterface(chatGUI);
             chatGUI.setSendMessageInterface(client);
         } catch (IOException e) {
-            System.out.println("Impossible to connect to server");
+            System.out.println("Impossible connecting to server");
+            if (retryConnection()) attemptConnection();
         }
+    }
 
+    private static boolean retryConnection(){
+        int choice = JOptionPane.showConfirmDialog(
+                chatGUI,
+                RETRY_CONNECTION_MESSAGE,
+                "Error connecting to server",
+                JOptionPane.YES_NO_OPTION);
+        return choice == 0;
     }
 
 }

@@ -28,31 +28,46 @@ public class ServerGUI {
 
     private class MainInterface extends JPanel{
 
-        private static final int FONT_SIZE = 25;
+        private Button startButton, stopButton;
+
+        private static final int FONT_SIZE = 30;
 
         public MainInterface() {
             this.setLayout(new FlowLayout());
             this.setBorder(new EmptyBorder(30, 30, 30, 30));
-            JButton startButton = new JButton("Start");
+            startButton = new Button("Start");
             startButton.addActionListener(e -> attemptStartServer());
-            startButton.setFont(new Font("serif", Font.PLAIN, FONT_SIZE));
             this.add(startButton);
-            JButton stopButton = new JButton("Stop");
+            stopButton = new Button("Stop");
             stopButton.addActionListener(e -> attemptStopServer() );
-            stopButton.setFont(new Font("serif", Font.PLAIN, FONT_SIZE));
+            stopButton.setEnabled(false);
             this.add(stopButton);
         }
 
         private void attemptStartServer(){
             try {
                 serverStartStopInterface.startServer();
+                startButton.setEnabled(false);
+                stopButton.setEnabled(true);
             } catch (IOException e){ e.printStackTrace(); }
         }
 
         private void attemptStopServer(){
             try {
                 serverStartStopInterface.stopServer();
+                startButton.setEnabled(true);
+                stopButton.setEnabled(false);
             } catch (IOException e) { e.printStackTrace(); }
+        }
+
+        private class Button extends JButton{
+
+            public Button(String text) {
+                super(text);
+                this.setFont(new Font("sans-serif", Font.PLAIN, FONT_SIZE));
+                this.setBackground(new Color(0, 105, 92));
+                this.setForeground(Color.WHITE);
+            }
         }
     }
 }
