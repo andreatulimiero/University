@@ -3,6 +3,7 @@ package client;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -21,11 +22,43 @@ public class Client {
         socket = new Socket(HOST, PORT);
         in = new Scanner(socket.getInputStream());
         out = new PrintWriter(socket.getOutputStream());
+        new Thread(new Authenticate()).start();
     }
 
-    private void authenticate(){
-        out.println("Name: Alamanas");
-        out.flush();
+    private class MessageListener implements Runnable {
+        @Override
+        public void run() {
+            while (true) {
+                String inLine = in.nextLine();
+                System.out.println(inLine);
+            }
+        }
+    }
+
+    private class Authenticate implements Runnable {
+
+        @Override
+        public void run() {
+            do {
+                out.println("Name: Alamanas");
+                out.flush();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    System.out.println("Sending authentication");
+                    if (in.nextLine().equalsIgnoreCase("authenticated")) {
+                        out.println("Message to be saved");
+                        out.flush();
+                        return;
+                    }
+                } catch (NoSuchElementException e) {
+                    System.out.println("Connection with server was interrupted");
+                }
+            } while (true);
+        }
     }
 
 }
