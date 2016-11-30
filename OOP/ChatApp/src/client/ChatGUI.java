@@ -8,7 +8,7 @@ import java.awt.*;
 /**
  * Created by Utente on 11/26/2016.
  */
-public class ChatGUI implements ReceiveMessageInterface{
+public class ChatGUI extends JFrame implements ReceiveMessageInterface{
 
     private static final String WINDOW_TITLE = "Client";
 
@@ -16,16 +16,15 @@ public class ChatGUI implements ReceiveMessageInterface{
     private MainInterface mainInterface;
 
     public ChatGUI() {
-
-        JFrame mainFrame = new JFrame(WINDOW_TITLE);
-        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        super(WINDOW_TITLE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         mainInterface = new MainInterface();
-        mainFrame.getContentPane().add(mainInterface);
+        this.getContentPane().add(mainInterface);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        mainFrame.pack();
-        mainFrame.setLocation(dim.width/2-mainFrame.getSize().width/2, dim.height/2-mainFrame.getSize().height/2);
-        mainFrame.setVisible(true);
+        this.pack();
+        this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        this.setVisible(true);
     }
 
     public void setSendMessageInterface(SendMessageInterface sendMessageInterface) {

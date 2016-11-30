@@ -58,14 +58,15 @@ public class Client implements SendMessageInterface {
 
             @Override
             public void run() {
-                out.println("__get_messages__");
-                out.flush();
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                while (true) {
+                    out.println("__get_messages__");
+                    out.flush();
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-                new Thread(new MessageAsker()).start();
             }
         }
     }
