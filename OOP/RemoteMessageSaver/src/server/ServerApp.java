@@ -7,14 +7,10 @@ import java.io.IOException;
  */
 public class ServerApp {
 
-    public static void main(String[] args){
-        Server server = null;
-        try {
-            server = new Server();
-            server.startServer();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void main(String[] args) {
+        ServerGUI serverGUI = new ServerGUI();
+        Server server = new Server();
+        serverGUI.setStartStopServerInterface(server);
     }
 
 }

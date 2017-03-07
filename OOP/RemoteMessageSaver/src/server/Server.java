@@ -11,26 +11,34 @@ import java.util.*;
 /**
  * Created by Tuly on 11/29/2016.
  */
-public class Server {
+public class Server implements StartStopServerInterface{
 
     private static final int PORT = 3000;
 
     private ServerSocket serverSocket;
+    private List<Socket> clients;
     private Map<String, File> users;
 
-    public Server() throws IOException {
-        serverSocket = new ServerSocket(PORT);
+    public Server() {
         users = new HashMap<>();
     }
 
-    public void startServer() {
+    @Override
+    public void startServer() throws IOException {
+        serverSocket = new ServerSocket(PORT);
+        clients = new ArrayList<>();
         new Thread(new ConnectionListener()).start();
         System.out.println("Server up and running on port: " + PORT);
     }
 
+    @Override
     public void stopServer() {
         try {
+            for (Socket socket : clients) {
+                socket.close();
+            }
             serverSocket.close();
+            users.clear();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,12 +57,14 @@ public class Server {
             while (true) {
                 try {
                     while (true) {
-                        new Thread(new ClientHandler(serverSocket.accept())).start();
+                        Socket clientSocket = serverSocket.accept();
+                        clients.add(clientSocket);
+                        new Thread(new ClientHandler(clientSocket)).start();
                         System.out.println("Client connected");
                     }
                 } catch (IOException e) {
-
                     System.out.println("Server closed");
+                    return;
                 }
             }
         }
@@ -109,7 +119,7 @@ public class Server {
             File file = users.get(username);
             try {
                 FileWriter outFile = new FileWriter(file, file.exists());
-                outFile.write(message);
+                outFile.write(message.concat("\n"));
                 outFile.flush();
                 outFile.close();
             } catch (IOException e) {
