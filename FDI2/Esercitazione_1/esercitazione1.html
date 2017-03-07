@@ -1,0 +1,367 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+  <head>
+
+    <title>Esercitazione 1</title>
+
+    <meta name="description" content="Esercitazione 1">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+
+    <style type="text/css">
+    .style1 {
+    	text-decoration: underline;
+    }
+    .style3 {
+    	margin-left: 80px;
+    }
+    .style4 {
+    	margin-left: 120px;
+    }
+    </style>
+  </head>
+  <body>
+
+<center>
+  <h1>Fondamenti di Informatica II - Progettazione del Software - A.A. 2015/16</h1>
+  <h2>Esercitazione 1 - 2/03/2016</h2>
+</center>
+
+Scaricare i file ausiliari allo svolgimento degli esercizi: <a href="src.tar.gz">src.tar.gz</a>
+<br/>
+<br/>
+
+<h3>Esercizio 1.</h3>
+
+<p>Dopo aver analizzato la <a href="es1_src.zip">realizzazione</a> 
+del
+<a href="#adt_pila">Tipo astratto <em>
+Pila</em></a><em> </em>con uno schema realizzativo sia con side-effect (senza 
+condivisione di memoria) sia funzionale (con condivisione di memoria) realizzare 
+il <a href="#adt_lista">Tipo Astratto <em>Lista</em></a> 
+con gli stessi schemi realizzativi. Scrivere anche due classi "main" per provare 
+le diverse realizzazioni.</p>
+<ul>
+	<li>Effettuare opportunamente anche l'overriding del metodo <tt>hashcode</tt> 
+	.</li>
+	<li>Realizzare la classe utilizzando i Generics.</li>
+</ul>
+
+Per quanto riguarda la realizzazione funzionale del tipo astratto Lista si vogliono inoltre implementare le seguenti operazioni:
+
+<UL>
+<LI>calcolo della lunghezza della lista, che dato un oggetto <TT>    Lista</TT> 
+calcola la lunghezza della lista che esso rappresenta;
+</LI>
+<LI>aggiunta un elemento in coda alla lista, che dato un oggetto
+  <TT>Lista</TT> ed un elemento da aggiungere restituisce un nuovo oggetto <TT>
+Lista</TT> ottenuto dal primo aggiungendo il nuovo elemento come ultimo elemento 
+della lista;
+</LI>
+<LI>concatenazione (<I>``append''</I>) di due liste, che dati due oggetti <TT>
+Lista</TT> restituisce un nuovo oggetto <TT>Lista</TT>
+  ottenuto concatenando le due liste; cioè restituendo una lista composta dagli 
+elementi della prima lista e seguiti dagli elementi della seconda lista;
+</LI>
+<LI>restituzione dell'elemento i-esimo della lista, che preso un oggetto <TT>
+Lista</TT> e un intero <I>i</I> (dove <I>i = 0,.., lung. della lista - 1</I>) 
+restituisce l'elemento in posizione <I>i</I>;
+</LI>
+<LI>inserimento di un nuovo elemento in posizione i-esima, che preso un oggetto <TT>
+Lista</TT>, un intero <I>i</I> (dove <I>i = 0,.., lung. della lista - 1</I>) e 
+un elemento da inserire, restituisce un nuovo oggetto <TT>Lista</TT> ottenuto 
+dal primo aggiungendo in posizione
+  <I>i</I>-esima il nuovo elemento.
+</LI>
+</UL>
+Per realizzare queste operazioni facciamo uso della ricorsione, sfruttando il 
+fatto che le liste sono definite induttivamente: la lista vuota è una lista, 
+aggiungendo un elemento in testa ad una lista (<I>cons</I>) otteniamo una lista, 
+nient'altro è una lista.
+
+<a name="adt_lista"></a>
+
+<DL>
+<DT><STRONG><U>TipoAstratto</U> <I>Lista(T)</I></STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG><U>Domini</U></STRONG></DT>
+<DD>&nbsp;&nbsp;
+      <DL>
+<DT><STRONG><I>Lista</I></STRONG></DT>
+<DD>: dominio di interesse del tipo
+          
+</DD>
+<DT><STRONG><I>T</I></STRONG></DT>
+<DD>: dominio degli elementi che formano le liste
+       
+</DD>
+</DL>
+   
+</DD>
+<DT><STRONG><U>Funzioni</U></STRONG></DT>
+<DD>&nbsp;&nbsp;
+      <DL>
+<DT><STRONG><I>listaVuota() --> &nbsp;Lista</I></STRONG></DT>
+<DD>        <U>pre</U>: nessuna
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> è la lista vuota
+</DD>
+<BR>
+
+<DT><STRONG><I>estVuota(Lista l) --> &nbsp;Boolean</I></STRONG></DT>
+<DD>
+        <U>pre</U>: nessuna
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> è true se la lista <I>l</I> è 
+vuota, false altrimenti
+</DD>
+<BR>
+
+<DT><STRONG><I>cons(T e, Lista l) --> &nbsp;Lista</I></STRONG></DT>
+<DD>        <U>pre</U>: nessuna
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> è la lista ottenuta da <I>l</I>
+        inserendo <I>e</I> come primo elemento
+</DD>
+<BR>
+
+<DT><STRONG><I>car(Lista l) --> &nbsp;T</I></STRONG></DT>
+<DD>        <U>pre</U>: <I>l</I> non è la lista vuota
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> è il primo elemento di <I>l</I>  
+</DD>
+<BR>
+
+<DT><STRONG><I>cdr(Lista l) --> &nbsp;Lista</I></STRONG></DT>
+<DD>       <U>pre</U>: <I>l</I> non è la lista vuota
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> è la lista ottenuta da <I>l</I>
+        eliminando il primo elemento
+</DD>
+<BR>
+
+</DL>
+   
+</DD>
+<DT><STRONG><U>FineTipoAstratto</U></STRONG></DT>
+<DD>
+</DD>
+</DL>
+
+<a name="adt_pila"></a>
+
+<DL>
+<DT><STRONG><U>TipoAstratto</U> <I>Pila(T)</I></STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG><U>Domini</U></STRONG></DT>
+<DD>&nbsp;&nbsp;
+      <DL>
+<DT><STRONG><I>Pila</I></STRONG></DT>
+<DD>: dominio di interesse del tipo
+          
+</DD>
+<DT><STRONG><I>T</I></STRONG></DT>
+<DD>: dominio degli elementi che formano le liste
+       
+</DD>
+</DL>
+   
+</DD>
+<DT><STRONG><U>Funzioni</U></STRONG></DT>
+<DD>&nbsp;&nbsp;
+      <DL>
+<DT><STRONG><I>pilaVuota() --> &nbsp;Pila</I></STRONG></DT>
+<DD>
+        <U>pre</U>: nessuna
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> è la pila vuota      
+</DD>
+<BR>
+
+<DT><STRONG><I>estVuota(Pila p) --> &nbsp;Boolean</I></STRONG></DT>
+<DD>        <U>pre</U>: nessuna
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> è true se la pila <I>p</I> è 
+vuota, false altrimenti
+      
+</DD>
+<BR>
+
+<DT><STRONG><I>push(T e, Pila p) --> &nbsp;Pila</I></STRONG></DT>
+<DD>        <U>pre</U>: nessuna
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> è la pila ottenuta da <I>p</I>
+        inserendo <I>e</I> in cima  
+</DD>
+<BR>
+
+<DT><STRONG><I>top(Pila p) --> &nbsp;T</I></STRONG></DT>
+<DD>        <U>pre</U>: <I>p</I> non è la pila vuota
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> è l'elemento affiorante di <I>p</I>  
+</DD>
+<BR>
+
+<DT><STRONG><I>pop(Pila p) --> &nbsp;Lista</I></STRONG></DT>
+<DD>        <U>pre</U>: <I>p</I> non è la pila vuota
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> è la pila ottenuta da <I>p</I>
+        eliminando l'elemento in cima
+</DD>
+<BR>
+
+</DL>
+   
+</DD>
+<DT><STRONG><U>FineTipoAstratto</U></STRONG></DT>
+<DD>
+</DD>
+</DL>
+
+
+<hr>
+
+<h3>Esercizio 2.</h3>
+
+<center><img src="schema_concettuale_ridotto.jpg"></center><br />
+
+
+Data l'implementazione fornita della classe Mezzo e lo schema concettuale in figura:
+<ol>
+	<li>Realizzare il <a href="#adt_officina">Tipo 
+	astratto
+	<em>Officina</em></a>.</li>
+	<li>Realizzare le seguenti specializzazioni della classe <em>Mezzo</em></li> ridefinendo il metodo <em>getNumeroRuote()</em>:
+</ol>
+<p class="style3"><span class="style1"><em><strong>Auto</strong></em></span> </p>
+<ul class="style4">
+	<li>Costruttore <tt> Auto(String unaMarca, String unModello, String 
+	unColore, String targa)</tt></li>
+	<li>Esiste&nbsp; un metodo<tt> getTarga()</tt> che restituisce la targe dell'auto</li>
+	<li>Il metodo<tt> getNumeroRuote()</tt> restituisce sempre 4.</li>
+</ul>
+<p class="style3"><span class="style1"><em><strong>Camion</strong></em></span> </p>
+<ul class="style4">
+	<li>Costruttore <tt> Camion(String unaMarca, String unModello, String 
+	unColore, boolean rimorchio)</tt> dove <tt> rimorchio</tt> vale <em>
+	true</em> se il camion è provvisto di rimorchio.</li>
+	<li>Esiste un metodo<tt> haRimorchio()</tt> che restituisce <em>true</em> se 
+	il camion è provvisto di rimorchio.</li>
+	<li>Il metodo<tt> getNumeroRuote()</tt> restituisce 8 se<tt> haRimorchio()</tt> 
+	vale <em>true</em> oppure 4 se <tt> haRimorchio()</tt> vale <em>false</em></li>
+</ul>
+<ol>
+	<li value="3">Realizzare una classe "main" per provare le implementazioni.</li>
+</ol>
+<h4>Note sulla realizzazione.</h4>
+
+<ul>
+<li>Rappresentazione dei valori: dobbiamo rappresentare da una parte la partita 
+IVA dell'officina e dall'altra i mezzi presenti nell'officina con associato il 
+loro status. 
+  <ul>
+  <li>La partita IVA la rappresentiamo con un campo dati privato (variabile di 
+istanza) <tt>String</tt>. </li>
+  <li>Le auto presenti nell'officina le rappresentiamo 
+  attraverso un campo dati privato di tipo <tt>HashSet</tt> contentente record di tipo <tt>MezzoInOfficina</tt>. Un record  <tt>MezzoInOfficina</tt> possiede due campi dati: il <tt>Mezzo</tt> affidato all'officina,
+   e lo stato di riparazione.
+  </li>
+  </ul>
+</li>
+<li>Schema realizzativo: essendo <i>Officina</i> un tipo astrazione di entità 
+sceglieremo uno schema realizzativo con side-effect (senza condivisione di 
+memoria). Gli oggetti <tt>Auto</tt> verranno utilizzati in sharing.</li>
+<li>Realizziamo la funzione <i>crea</i>
+  attraverso un costruttore con un parametro <tt>String</tt> per rappresentare 
+la partita IVA. Poiché <i>Officina</i> è un tipo astrazione di entità, il metodo <tt>
+equals</tt> ereditato da <tt>Object</tt> che verifica l'uguaglianza superficiale 
+è sufficiente a definire l'uguaglianza tra officina (cioè un'officina è uguale 
+solo a se stessa).</li>
+
+<li>Realizziamo la funzione <i>mezziInOfficina</i> come un metodo che ritorna un <b>clone</b> dell'<tt>HashSet&lt;MezzoInOfficina&gt;</tt> che <tt>Officina</tt> usa per rappresentare i mezzi presenti ed il loro stato.
+  <ul>
+	<li>Perche' occorre ritornare un clone dell'<tt>HashSet</tt>? Quale richi corriamo se torniamo la struttura dati originale?
+	<li>(esercizio per casa) <i>mezziInOfficina</i> deve ritornare un iteratore di <tt>MezzoInOfficina</tt> dove il metodo <i>remove</i> e' stato disabilitato.
+</ul>
+</li>
+
+</ul>
+
+
+
+<a name="adt_officina"></a>
+
+<DL>
+<DT><STRONG><U>TipoAstratto</U> <I>Officina</I></STRONG></DT>
+<DD>
+</DD>
+<DT><STRONG><U>Domini</U></STRONG></DT>
+<DD>&nbsp;&nbsp;
+      <DL>
+<DT><STRONG><I>Officina</I></STRONG></DT>
+<DD>: dominio di interesse del tipo         
+          
+</DD>
+<DT><STRONG><I>Mezzo</I></STRONG></DT>
+<DD>: dominio degli oggetti presenti nell'officina
+       
+</DD>
+</DL>
+   
+</DD>
+<DT><STRONG><U>Funzioni</U></STRONG></DT>
+<DD>&nbsp;&nbsp;
+      <DL>
+<DT><STRONG><I>crea(Stringa pi) --> &nbsp;Officina</I></STRONG></DT>
+<DD>        <U>pre</U>: nessuna
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> &#232; un'officina avente <I>pi</I> come
+        partita IVA e con nessuna auto
+<br/><br/>      
+</DD>
+<DT><STRONG><I>partitaIva(Officina o) --> &nbsp;String</I></STRONG></DT>
+<DD>        <U>pre</U>: nessuna
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> &#232; la partita IVA dell'officina <I>o</I> 
+<br/><br/>  
+</DD>
+<DT><STRONG><I>arrivaMezzo(Officina o, Mezzo a) --> &nbsp;Officina</I></STRONG></DT>
+<DD>        <U>pre</U>:  <I>a</I> non &#232; presente nell'officina
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> &#232; l'officina ottenuta da <I>o</I>
+        aggiungendo il mezzo <I>a</I> e attribuendo a tale auto lo status di
+        <I>inRiparazione</I>
+<br/><br/>      
+</DD>
+<DT><STRONG><I>approntaMezzo(Officina o, Mezzo a) --> &nbsp;Officina</I></STRONG></DT>
+<DD>        <U>pre</U>: <I>a</I> &#232; presente nell'officina ed ha con status
+        <I>inRiparazione</I>
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> &#232; l'officina ottenuta da <I>o</I>
+        cambiando lo status del mezzo <I>a</I> in <I>pronto</I>
+<br/><br/>      
+</DD>
+<DT><STRONG><I>parteMezzo(Officina o, Mezzo a) --> &nbsp;Officina</I></STRONG></DT>
+<DD>        <U>pre</U>: <I>a</I> &#232; presente nell'officina ed ha con status
+        <I>pronto</I>
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> &#232; l'officina ottenuta da <I>o</I>
+        eliminando il mezzo <I>a</I>
+<br/><br/>      
+</DD>
+<DT><STRONG><I>estInRiparazione(Officina o, Mezzo a) --> &nbsp;Boolean</I></STRONG></DT>
+<DD>        <U>pre</U>: nessuna
+<BR>      <U>post</U>: <SMALL>RESULT</SMALL> &#232; true se se <I>a</I> &#232; presente
+      nell'officina <I>o</I> ed ha lo status <I>inRiparazione</I>;
+      <I>false</I> altrimenti
+<br/><br/>      
+</DD>
+<DT><STRONG><I>estPronto(Officina o, Mezzo a) --> &nbsp;Boolean</I></STRONG></DT>
+<DD>        <U>pre</U>: nessuna
+<BR>      <U>post</U>: <SMALL>RESULT</SMALL> &#232; true se <I>a</I> &#232; presente
+      nell'officina <I>o</I> ed ha lo status <I>pronto</I>;
+      <I>false</I> altrimenti
+<br/>    
+</DD>
+<br/> 
+<DT><STRONG><I>mezziInOfficina() --> &nbsp;Set di Mezzi ed il loro stato</I></STRONG></DT>
+<DD>        <U>pre</U>: nessuna
+    
+<BR>        <U>post</U>: <SMALL>RESULT</SMALL> &#232; l'insieme di mezzi affidati all'officina con associato il loro stato
+<br/><br/>      
+</DD>
+</DL>
+   
+</DD>
+<DT><STRONG><U>FineTipoAstratto</U></STRONG></DT>
+<DD>
+</DD>
+</DL>
+
+</body></html>

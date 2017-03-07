@@ -144,8 +144,10 @@ public class Server implements ServerStartStopInterface {
                         new Thread(new BroadcastSender(lineIn)).start();
                 }
 
-            } catch (IOException e) {
+            } catch (NoSuchElementException e){
                 System.out.print("Client disconnected");
+            } catch (IOException e) {
+                e.printStackTrace();
             } finally {
                 System.out.println("Closing client socket");
                 if (in != null) in.close();
