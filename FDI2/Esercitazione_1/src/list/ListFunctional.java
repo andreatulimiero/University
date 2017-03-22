@@ -20,12 +20,7 @@ public class ListFunctional<T> {
     }
 
     public ListFunctional<T> cons(T o) {
-        Node<T> node = new Node<>();
-        node.info = o;
-        node.next = head;
-        head = node;
-
-        return new ListFunctional<>(node);
+        return new ListFunctional<>(new Node<>(o, head));
     }
 
     public T car() {
@@ -95,12 +90,20 @@ public class ListFunctional<T> {
         return getNode(node.next, i - 1);
     }
 
+
     public ListFunctional<T> insertAt(int i, T o){
         if (i >= length()) throw new RuntimeException("List length is " + length());
 
-        Node<T> node = new Node<>(o, getNode(head, i));
-        getNode(head, i).next = node;
-        return new ListFunctional<>()
+        return new ListFunctional<>(insertAt(i, o, head));
+    }
+
+    private Node<T> insertAt(int i, T o, Node<T> node){
+        if (i == 0)
+            return new Node<>(o, null);
+        if (i == 1)
+            return new Node<>(node.info, new Node<>(o, node.next));
+
+        return new Node(node.info, insertAt(i - 1, o, node.next));
     }
 
     private String prettifyList(Node<T> node) {
