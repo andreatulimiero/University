@@ -113,9 +113,10 @@ int main(int argc, char** argv) {
     pid_t* pid_list = malloc(sizeof(pid_t) * n);
     for (i = 0; i < n; i++) {
         pid_list[i] = fork();
-        if (pid_list[i] == 0)
+        if (pid_list[i] == 0) {
+	    printf("Proc %d spawned and waiting for start\n", i);
             proc(i, threadsno, sem, notifier);
-        else if (pid_list[i] < 0) {
+	} else if (pid_list[i] < 0) {
             fprintf(stderr, "Error spawning process\n");
             exit(1);
         }
