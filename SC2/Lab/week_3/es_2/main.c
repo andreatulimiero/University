@@ -12,24 +12,25 @@
 #define NUM_RESOURCES 1
 #define WAIT_TIME 1
 #define SEM_NAME "/semaphore"
+#define SEM_NOT_NAME "/semaphore-notification"
 #define FILE_NAME "out.txt"
 
-void proc(int procno, int m, sem_t* sem) {
+void proc(int procno, int m, sem_t* sem, sem_t* notifier) {
     int i;
     pthread_t* threads = malloc(sizeof(pthread_t) * m);
     //TODO: replace should_stop with a var set by the main proc in the notify function
-    int should_stop = 0;
-    while (!should_stop) {
+    int notif_val; sem_getvalue(notifier, &notif_val);
+    while (notif_val != 1) sem_getvalue(notifier, &notif_val);
+    do {
 	for (i = 0; i < m; i++) {
 	    pthread_create(&threads[i], NULL, &handler, (void*) &procno);
 	}
 	for (i = 0; i < m; i++) {
 	    pthread_join(threads[i], NULL);
-	    printf("Thread %d in proc %d finished\n", i, procno);
+	    //printf("Thread %d in proc %d finished\n", i, procno);
 	}
-
-	should_stop = 1;
-    }
+	sem_getvalue(notifier, &notif_val);
+    } while (notif_val);
 
     _exit(0);
 }
@@ -60,12 +61,18 @@ int get_most_frequent_process(int n) {
     return most_freq;
 }
 
-void notify_stop(sem_t* sem) {
-    int sval; sem_getvalue(sem, &sval);
-    printf("Sem value %d\n", sval);
+void notify_start(sem_t* notifier) {
+    printf("Notifing start\n");
+    sem_wait(notifier);
+}
+
+void notify_stop(sem_t* notifier) {
+    printf("Notifing stop\n");
+    sem_wait(notifier);
 }
 
 void clean() {
+    sem_unlink(SEM_NOT_NAME);
     sem_unlink(SEM_NAME);
 }
 
@@ -86,6 +93,18 @@ int main(int argc, char** argv) {
         //ERROR_HANDLER(errno, "Error creating semaphore\n");
     }
 
+    sem_t* notifier = sem_open(SEM_NOT_NAME, O_CREAT | O_EXCL, 0600, 2);
+    if (notifier == SEM_FAILED && errno == EEXIST) {
+        printf("Notification semaphore already up, unlinking it\n");
+        sem_unlink(SEM_NOT_NAME);
+        notifier = sem_open(SEM_NOT_NAME, O_CREAT | O_EXCL, 0600, 2);
+
+        //ERROR_HANDLER(errno, "Error creating semaphore\n");
+    }
+    if (notifier == SEM_FAILED) {
+	printf("Impossible to create the semaphore since %s\n", strerror(errno));
+    }
+
     /* Cleaning output file previously used */
     int fd = open(FILE_NAME, O_CREAT | O_TRUNC, 0640);
     close(fd);
@@ -95,20 +114,21 @@ int main(int argc, char** argv) {
     for (i = 0; i < n; i++) {
         pid_list[i] = fork();
         if (pid_list[i] == 0)
-            proc(i, threadsno, sem);
+            proc(i, threadsno, sem, notifier);
         else if (pid_list[i] < 0) {
             fprintf(stderr, "Error spawning process\n");
             exit(1);
         }
     }
+    notify_start(notifier);
     sleep(WAIT_TIME);
-    notify_stop(sem);
+    notify_stop(notifier);
     for (i = 0; i < n; i++) {
 	waitpid(pid_list[i], NULL, 0);
 	printf("Proc %d terminated\n", i);
     }
     printf("Process with most accesses is %d\n", get_most_frequent_process(n));
 
-    clean();
+    clean(sem, notifier);
     return 0;
 }

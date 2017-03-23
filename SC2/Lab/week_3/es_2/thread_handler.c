@@ -30,7 +30,7 @@ void* handler(void* args) {
         exit(1);
     }
 
-    printf("Acquired resource, writing %s\n", buff, FILE_NAME);
+    //printf("Acquired resource, writing %s\n", buff, FILE_NAME);
     write(fd, buff, strlen(buff));
 
     if (sem_post(sem)) {
