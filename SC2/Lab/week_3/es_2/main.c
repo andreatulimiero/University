@@ -86,6 +86,9 @@ int main(int argc, char** argv) {
 
     /* Cleaning output file previously used */
     int fd = open(FILE_NAME, O_CREAT | O_TRUNC, 0640);
+    char* msg = malloc(sizeof(char) * 1024);
+    sprintf(msg, "Error opening %s", FILE_NAME);
+    ERROR_HANDLER(fd, msg);
     close(fd);
 
     int i;

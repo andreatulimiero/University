@@ -15,6 +15,10 @@
 void* handler(void* args) {
     int fatherno = *((int*) args);
     int fd = open(FILE_NAME, O_CREAT | O_APPEND | O_WRONLY, 0640);
+    char* msg = calloc(1024, sizeof(char));
+    sprintf(msg, "Error opening %s", FILE_NAME);
+    ERROR_HANDLER(fd, msg);
+
     int digits = (fatherno / 10) + 1;
     char* buff = calloc(digits + 2, sizeof(char));
     sprintf(buff, "%d\n", fatherno);
@@ -36,9 +40,10 @@ void* handler(void* args) {
 
     ERROR_HANDLER(sem_close(sem), "Could not close the semaphore");
 
-    char* buffer = malloc(sizeof(1024));
-    sprintf(buffer, "Error closing %s", FILE_NAME);
-    ERROR_HANDLER(close(fd), buffer);
+    free(msg);
+    msg = calloc(1024, sizeof(char));
+    sprintf(msg, "Error closing %s", FILE_NAME);
+    ERROR_HANDLER(close(fd), msg);
 
     pthread_exit(0);
 }

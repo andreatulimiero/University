@@ -3,7 +3,7 @@
 
 #define GENERAL_ERROR_HANDLER(cond, errno, msg) \
     if (cond) {\
-        fprintf(stderr, "%s:%s\n", msg, strerror(errno));\
+        fprintf(stderr, "%s: %s\n", msg, strerror(errno));\
         exit(EXIT_FAILURE);\
     }
 
