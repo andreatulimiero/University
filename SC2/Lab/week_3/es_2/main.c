@@ -8,32 +8,14 @@
 #include <string.h>
 
 #include "thread_handler.h"
+#include "proc_handler.h"
+#include "utils.h"
 
 #define NUM_RESOURCES 1
 #define WAIT_TIME 1
 #define SEM_NAME "/semaphore"
 #define SEM_NOT_NAME "/semaphore-notification"
 #define FILE_NAME "out.txt"
-
-void proc(int procno, int m, sem_t* sem, sem_t* notifier) {
-    int i;
-    pthread_t* threads = malloc(sizeof(pthread_t) * m);
-    //TODO: replace should_stop with a var set by the main proc in the notify function
-    int notif_val; sem_getvalue(notifier, &notif_val);
-    while (notif_val != 1) sem_getvalue(notifier, &notif_val);
-    do {
-	for (i = 0; i < m; i++) {
-	    pthread_create(&threads[i], NULL, &handler, (void*) &procno);
-	}
-	for (i = 0; i < m; i++) {
-	    pthread_join(threads[i], NULL);
-	    //printf("Thread %d in proc %d finished\n", i, procno);
-	}
-	sem_getvalue(notifier, &notif_val);
-    } while (notif_val);
-
-    _exit(0);
-}
 
 int get_line(int fd, char* line) {
     char* c = malloc(sizeof(char));
@@ -71,7 +53,7 @@ void notify_stop(sem_t* notifier) {
     sem_wait(notifier);
 }
 
-void clean() {
+void clean_and_close() {
     sem_unlink(SEM_NOT_NAME);
     sem_unlink(SEM_NAME);
 }
@@ -102,7 +84,7 @@ int main(int argc, char** argv) {
         //ERROR_HANDLER(errno, "Error creating semaphore\n");
     }
     if (notifier == SEM_FAILED) {
-	printf("Impossible to create the semaphore since %s\n", strerror(errno));
+        printf("Impossible to create the semaphore since %s\n", strerror(errno));
     }
 
     /* Cleaning output file previously used */
@@ -125,11 +107,11 @@ int main(int argc, char** argv) {
     sleep(WAIT_TIME);
     notify_stop(notifier);
     for (i = 0; i < n; i++) {
-	waitpid(pid_list[i], NULL, 0);
-	printf("Proc %d terminated\n", i);
+        waitpid(pid_list[i], NULL, 0);
+        printf("Proc %d terminated\n", i);
     }
     printf("Process with most accesses is %d\n", get_most_frequent_process(n));
 
-    clean(sem, notifier);
+    clean_and_close(sem, notifier);
     return 0;
 }

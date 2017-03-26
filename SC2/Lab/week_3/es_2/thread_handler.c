@@ -7,6 +7,8 @@
 #include <pthread.h>
 #include <string.h>
 
+#include "utils.h"
+
 #define SEM_NAME "/semaphore"
 #define FILE_NAME "out.txt"
 
@@ -25,23 +27,18 @@ void* handler(void* args) {
         exit(1);
     }
 
-    if (sem_wait(sem)) {
-        printf("[FATAL ERROR] Could not lock the semaphore from thread %d, the reason is: %s\n", fatherno, strerror(errno));
-        exit(1);
-    }
+    ERROR_HANDLER(sem_wait(sem), "Could not lock the semaphore");
 
     //printf("Acquired resource, writing %s\n", buff, FILE_NAME);
-    write(fd, buff, strlen(buff));
+    ERROR_HANDLER(write(fd, buff, strlen(buff)), "Error writing to file")
 
-    if (sem_post(sem)) {
-        printf("[FATAL ERROR] Could not unlock the semaphore from thread %d, the reason is: %s\n", fatherno, strerror(errno));
-        exit(1);
-    }
-    sem_close(sem);
-    if (close(fd)) {
-	fprintf(stderr, "Error closing %s: %s\n", FILE_NAME, strerror(errno));
-	exit(1);
-    }
+    ERROR_HANDLER(sem_post(sem), "[FATAL ERROR] Could not unlock the semaphore");
+
+    ERROR_HANDLER(sem_close(sem), "Could not close the semaphore");
+
+    char* buffer = malloc(sizeof(1024));
+    sprintf(buffer, "Error closing %s", FILE_NAME);
+    ERROR_HANDLER(close(fd), buffer);
 
     pthread_exit(0);
 }
