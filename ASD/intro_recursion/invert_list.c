@@ -2,10 +2,10 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "linked_list.h"
 
 linked_list * invertiLista(linked_list_iterator * iter) {
-    int length = list_length(iter);
-    printf("Length: %d", length);
+    return iter;
 }
 
 int list_length(linked_list_iterator* iter) {	

@@ -17,6 +17,17 @@ extern "C" {
     
 typedef void linked_list;
 typedef void linked_list_iterator;
+
+typedef struct _linked_list_node {
+    int value;
+    struct _linked_list_node *next;
+} linked_list_node;
+    
+typedef struct {
+    linked_list_node *head;
+    linked_list_node *tail;
+    int size;
+} linked_list_struct;
     
 /*
  * Write in the position denoted by the value pointer the element in the i-th

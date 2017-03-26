@@ -93,7 +93,7 @@ int main(int argc, char** argv) {
         labirinto_delete(lab);
 
     } else {
-    	printf("Rihiesto argomento: {inverti, maxGap, labirinto}\n");
+    	printf("Richiesto argomento: {inverti, maxGap, labirinto}\n");
     	return EXIT_FAILURE;
     }
     

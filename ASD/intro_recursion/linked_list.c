@@ -2,17 +2,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-typedef struct _linked_list_node {
-    int value;
-    struct _linked_list_node *next;
-} linked_list_node;
-    
-typedef struct {
-    linked_list_node *head;
-    linked_list_node *tail;
-    int size;
-} linked_list_struct;
-
 int linked_list_get(linked_list * ll, int index, int *value) {
     linked_list_struct *ptr = (linked_list_struct *) ll;
     if (index < 0 || index >= ptr->size)
@@ -94,7 +83,6 @@ linked_list * linked_list_new() {
 }
 
 int linked_list_delete(linked_list *ll) {
-
 	if (ll == NULL) {
 		return LINKED_LIST_NOK;
 	}
