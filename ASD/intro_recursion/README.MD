@@ -1,4 +1,4 @@
-#Introduction to recursion
+# Introduction to recursion
 
 To use this launch `./driver` with one of the possible sub-commands:
 * "Inverti": simple list inversion
