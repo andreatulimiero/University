@@ -14,6 +14,7 @@ void proc(int procno, int m, sem_t* sem, sem_t* notifier) {
     pthread_t* threads = malloc(sizeof(pthread_t) * m);
     int notif_val; sem_getvalue(notifier, &notif_val);
     while (notif_val != 1) sem_getvalue(notifier, &notif_val);
+    printf("Start notification received from proc %d\n", procno);
     do {
         for (i = 0; i < m; i++) {
             pthread_create(&threads[i], NULL, &handler, (void*) &procno);

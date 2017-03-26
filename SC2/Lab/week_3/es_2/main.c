@@ -12,7 +12,7 @@
 #include "utils.h"
 
 #define NUM_RESOURCES 1
-#define WAIT_TIME 1
+#define WAIT_TIME 2
 #define SEM_NAME "/semaphore"
 #define SEM_NOT_NAME "/semaphore-notification"
 #define FILE_NAME "out.txt"
@@ -73,7 +73,7 @@ int main(int argc, char** argv) {
         printf("Semaphore already up, unlinking it\n");
         sem_unlink(SEM_NAME);
         sem = sem_open(SEM_NAME, O_CREAT | O_EXCL, 0600, NUM_RESOURCES);
-        //ERROR_HANDLER(errno, "Error creating semaphore\n");
+        GENERAL_ERROR_HANDLER(sem == SEM_FAILED, errno, "Error opening notification semaphore");
     }
 
     sem_t* notifier = sem_open(SEM_NOT_NAME, O_CREAT | O_EXCL, 0600, 2);
@@ -81,11 +81,7 @@ int main(int argc, char** argv) {
         printf("Notification semaphore already up, unlinking it\n");
         sem_unlink(SEM_NOT_NAME);
         notifier = sem_open(SEM_NOT_NAME, O_CREAT | O_EXCL, 0600, 2);
-
-        //ERROR_HANDLER(errno, "Error creating semaphore\n");
-    }
-    if (notifier == SEM_FAILED) {
-        printf("Impossible to create the semaphore since %s\n", strerror(errno));
+        GENERAL_ERROR_HANDLER(notifier == SEM_FAILED, errno, "Error opening notification semaphore");
     }
 
     /* Cleaning output file previously used */
