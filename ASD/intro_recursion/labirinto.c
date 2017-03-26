@@ -1,41 +1,11 @@
 #include "labirinto.h"
 
 #include <stdlib.h>
-<<<<<<< HEAD
-=======
 #include <stdio.h>
->>>>>>> 16d9eed7fd18e2eba99b461efc38b7d958e6120a
 #include <assert.h>
 
 typedef struct {
     int n;
-<<<<<<< HEAD
-    int *matrix;
-    int *marcata;
-} labirinto_struct ;
-
-labirinto * labirinto_new(int n) {
-    return NULL;
-}
-
-void labirinto_delete(labirinto * lab) {
-    
-}
-
-void labirinto_setpiena(labirinto * lab, int r, int c) {
-    
-}
-
-int labirinto_uscita(labirinto * lab, int r, int c) {
-    return 0;
-}
-
-int labirinto_percorribile(labirinto * lab, int r, int c) {
-    return 0;
-}
-
-int labirinto_uscitaraggiungibileda(labirinto * lab, int r, int c) {
-=======
     int **matrix;
     int **marcata;
 } labirinto_struct ;
@@ -94,26 +64,18 @@ int labirinto_uscitaraggiungibileda(labirinto * lab, int r, int c) {
     for (i = r - 1; i <= r + 1; i++)
 	for (j = c - 1; j <= c + 1; j++) {
 	    if (labirinto_percorribile(l, i, j)) {
-		l->marcata[i][j] = '+';
-		if (!labirinto_uscitaraggiungibileda(lab, i, j)) {
-		    l->marcata[i][j] = ' ';
-		    return 0;
-		}
-		return 1;
+            l->marcata[i][j] = '+';
+            if (!labirinto_uscitaraggiungibileda(lab, i, j)) {
+                l->marcata[i][j] = ' ';
+                return 0;
+            }
+            return 1;
 	    }
-	}
->>>>>>> 16d9eed7fd18e2eba99b461efc38b7d958e6120a
+    }
     return 0;
 }
 
 int labirinto_risolvibile(labirinto * lab) {
-<<<<<<< HEAD
-    return 0;
-}
-
-void labirinto_tostring(labirinto * lab, char * buffer, int buffer_size) {
-
-=======
    return labirinto_uscitaraggiungibileda(lab, 0, 0);
 }
 
@@ -127,5 +89,4 @@ void labirinto_tostring(labirinto * lab, char * buffer, int buffer_size) {
 	printf("\n");
     }
     printf("---------------------------\n");
->>>>>>> 16d9eed7fd18e2eba99b461efc38b7d958e6120a
 }

@@ -90,10 +90,6 @@ int main(int argc, char** argv) {
         int found = labirinto_risolvibile(lab);
         printf("Percorso%s trovato.\n", (found == LABIRINTO_TRUE ? "" : " NON"));
         labirinto_tostring(lab, buffer, max_size);
-<<<<<<< HEAD
-        printf("%s", buffer);
-=======
->>>>>>> 16d9eed7fd18e2eba99b461efc38b7d958e6120a
         labirinto_delete(lab);
 
     } else {
