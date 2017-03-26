@@ -21,8 +21,8 @@ int get_line(int fd, char* line) {
     char* c = malloc(sizeof(char));
     int i;
     for (i = 0; read(fd, c, 1); i++) { 
-	if (*c == '\n') return i;
-	line[i] = *c;
+        if (*c == '\n') return i;
+        line[i] = *c;
     }
     return EOF;
 }
@@ -31,10 +31,11 @@ int get_most_frequent_process(int n) {
     int i;
     int* freqs = malloc(sizeof(int) * n);
     int fd = open(FILE_NAME, O_RDONLY, 0640);
+    ERROR_HANDLER(fd, "Error opening file");
     char* line = malloc(sizeof(char) * 1024);
     while (get_line(fd, line) != EOF) {
-	int procno = atoi(line);
-	freqs[procno]++;
+        int procno = atoi(line);
+        freqs[procno]++;
     }
     int most_freq = 0;
     for (i = 1; i < n; i++) 
@@ -45,17 +46,17 @@ int get_most_frequent_process(int n) {
 
 void notify_start(sem_t* notifier) {
     printf("Notifing start\n");
-    sem_wait(notifier);
+    ERROR_HANDLER(sem_wait(notifier), "Error requesting start through wait")
 }
 
 void notify_stop(sem_t* notifier) {
     printf("Notifing stop\n");
-    sem_wait(notifier);
+    ERROR_HANDLER(sem_wait(notifier), "Error requesting stop through stop");
 }
 
 void clean_and_close() {
-    sem_unlink(SEM_NOT_NAME);
-    sem_unlink(SEM_NAME);
+    ERROR_HANDLER(sem_unlink(SEM_NOT_NAME), "Error unlinking notification semaphore");
+    ERROR_HANDLER(sem_unlink(SEM_NAME), "Error unlinking file write semaphore");
 }
 
 int main(int argc, char** argv) {
@@ -96,9 +97,9 @@ int main(int argc, char** argv) {
     for (i = 0; i < n; i++) {
         pid_list[i] = fork();
         if (pid_list[i] == 0) {
-	    printf("Proc %d spawned and waiting for start\n", i);
+            printf("Proc %d spawned and waiting for start\n", i);
             proc(i, threadsno, sem, notifier);
-	} else if (pid_list[i] < 0) {
+        } else if (pid_list[i] < 0) {
             fprintf(stderr, "Error spawning process\n");
             exit(1);
         }
@@ -106,6 +107,7 @@ int main(int argc, char** argv) {
     notify_start(notifier);
     sleep(WAIT_TIME);
     notify_stop(notifier);
+    
     for (i = 0; i < n; i++) {
         waitpid(pid_list[i], NULL, 0);
         printf("Proc %d terminated\n", i);
