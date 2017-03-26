@@ -23,6 +23,8 @@ node_tree * get_first_child(node_tree * node_tree);
 void set_next_sibling(node_tree * node, node_tree * set_next_sibling);
 node_tree * get_next_sibling(node_tree * node_tree);
 
+void print_depth(int depth);
+
 void print_tree(node_tree * node_tree);
 
 void delete_tree(node_tree * node_tree);

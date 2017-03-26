@@ -47,7 +47,7 @@ void delete_tree(node_tree * nt) {
     }
 }
 
-char* print_depth(int depth) {
+void print_depth(int depth) {
     int i;
     for (i = 0; i < depth; i++) printf("-");
 }
