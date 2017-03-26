@@ -1,0 +1,19 @@
+
+Printing tree...
+10
+-6
+--2
+--8
+-5
+-9
+--3
+--11
+PostOrder visit...
+Visiting node: 2
+Visiting node: 8
+Visiting node: 6
+Visiting node: 5
+Visiting node: 3
+Visiting node: 11
+Visiting node: 9
+Visiting node: 10
