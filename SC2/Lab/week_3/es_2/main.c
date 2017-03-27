@@ -27,7 +27,7 @@ int get_line(int fd, char* line) {
     return EOF;
 }
 
-int get_most_frequent_process(int n) {
+void print_most_frequent_process(int n) {
     int i;
     int* freqs = malloc(sizeof(int) * n);
     int fd = open(FILE_NAME, O_RDONLY, 0640);
@@ -39,9 +39,10 @@ int get_most_frequent_process(int n) {
     }
     int most_freq = 0;
     for (i = 1; i < n; i++) 
-	if (freqs[i] > freqs[most_freq])
-	    most_freq = i;
-    return most_freq;
+        if (freqs[i] > freqs[most_freq])
+            most_freq = i;
+        
+    printf("Process with most accesses is %d with %d accesses\n", most_freq + 1, freqs[most_freq]);
 }
 
 void notify_start(sem_t* notifier) {
@@ -111,7 +112,8 @@ int main(int argc, char** argv) {
         waitpid(pid_list[i], NULL, 0);
         printf("Proc %d terminated\n", i);
     }
-    printf("Process with most accesses is %d\n", get_most_frequent_process(n));
+
+    print_most_frequent_process(n);
 
     clean_and_close(sem, notifier);
     return 0;
