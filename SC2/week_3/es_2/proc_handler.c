@@ -28,5 +28,6 @@ void proc(int procno, int m) {
         sem_getvalue(notifier, &notif_val);
     } while (notif_val);
 
+    ERROR_HANDLER(sem_close(notifier), "Impossible closing the SEM_NOT");
     _exit(0);
 }
