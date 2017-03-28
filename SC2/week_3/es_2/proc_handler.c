@@ -7,10 +7,12 @@
 #include <pthread.h>
 #include <string.h>
 
+#include "utils.h"
 #include "thread_handler.h"
 
-void proc(int procno, int m, sem_t* sem, sem_t* notifier) {
+void proc(int procno, int m) {
     int i;
+    sem_t* notifier = sem_open(SEM_NOT_NAME, 0);
     pthread_t* threads = malloc(sizeof(pthread_t) * m);
     int notif_val; sem_getvalue(notifier, &notif_val);
     while (notif_val != 1) sem_getvalue(notifier, &notif_val);

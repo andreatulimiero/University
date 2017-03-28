@@ -11,11 +11,6 @@
 #include "proc_handler.h"
 #include "utils.h"
 
-#define NUM_RESOURCES 1
-#define WAIT_TIME 2
-#define SEM_NAME "/semaphore"
-#define SEM_NOT_NAME "/semaphore-notification"
-#define FILE_NAME "out.txt"
 
 int get_line(int fd, char* line) {
     char* c = malloc(sizeof(char));
@@ -98,7 +93,7 @@ int main(int argc, char** argv) {
         pid_list[i] = fork();
         if (pid_list[i] == 0) {
             printf("Proc %d spawned and waiting for start\n", i);
-            proc(i, threadsno, sem, notifier);
+            proc(i, threadsno);
         } else if (pid_list[i] < 0) {
             fprintf(stderr, "Error spawning process\n");
             exit(1);
