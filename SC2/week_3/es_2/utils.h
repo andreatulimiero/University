@@ -6,6 +6,7 @@
 #define WAIT_TIME 2
 #define SEM_NAME "/semaphore"
 #define SEM_NOT_NAME "/semaphore-notification"
+#define SEM_SYNC_NAME "/semaphore-sync"
 #define FILE_NAME "out.txt"
 
 #define GENERAL_ERROR_HANDLER(cond, errno, msg) \

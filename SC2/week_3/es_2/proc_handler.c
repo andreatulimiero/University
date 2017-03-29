@@ -13,6 +13,10 @@
 void proc(int procno, int m) {
     int i;
     sem_t* notifier = sem_open(SEM_NOT_NAME, 0);
+    GENERAL_ERROR_HANDLER(notifier == SEM_FAILED, errno, "Error opening notifier semaphore");
+    sem_t* sync = sem_open(SEM_SYNC_NAME, 0);
+    GENERAL_ERROR_HANDLER(sync == SEM_FAILED, errno, "Error opening sync semaphore");
+    sem_post(sync);
     pthread_t* threads = malloc(sizeof(pthread_t) * m);
     int notif_val; sem_getvalue(notifier, &notif_val);
     while (notif_val != 1) sem_getvalue(notifier, &notif_val);
