@@ -50,6 +50,16 @@ void notify_stop(sem_t* notifier) {
     ERROR_HANDLER(sem_wait(notifier), "Error requesting stop through stop");
 }
 
+sem_t* get_sem(char* name, int resources) {
+    sem_t* sem = sem_open(name, O_CREAT | O_EXCL, 0600, resources);
+    if (sem == SEM_FAILED && errno == EEXIST) {
+        printf("Semaphore %s already up, unlinking it\n", name);
+        sem_unlink(SEM_NAME);
+        sem = sem_open(name, O_CREAT | O_EXCL, 0600, resources);
+        GENERAL_ERROR_HANDLER(sem == SEM_FAILED, errno, "Error opening semaphore");
+    }
+}
+
 void clean_and_close() {
     ERROR_HANDLER(sem_unlink(SEM_NOT_NAME), "Error unlinking notification semaphore");
     ERROR_HANDLER(sem_unlink(SEM_NAME), "Error unlinking file write semaphore");
@@ -64,21 +74,9 @@ int main(int argc, char** argv) {
     int n = atoi(argv[1]);
     int threadsno = atoi(argv[2]);
     
-    sem_t* sem = sem_open(SEM_NAME, O_CREAT | O_EXCL, 0600, NUM_RESOURCES);
-    if (sem == SEM_FAILED && errno == EEXIST) {
-        printf("Semaphore already up, unlinking it\n");
-        sem_unlink(SEM_NAME);
-        sem = sem_open(SEM_NAME, O_CREAT | O_EXCL, 0600, NUM_RESOURCES);
-        GENERAL_ERROR_HANDLER(sem == SEM_FAILED, errno, "Error opening notification semaphore");
-    }
-
-    sem_t* notifier = sem_open(SEM_NOT_NAME, O_CREAT | O_EXCL, 0600, 2);
-    if (notifier == SEM_FAILED && errno == EEXIST) {
-        printf("Notification semaphore already up, unlinking it\n");
-        sem_unlink(SEM_NOT_NAME);
-        notifier = sem_open(SEM_NOT_NAME, O_CREAT | O_EXCL, 0600, 2);
-        GENERAL_ERROR_HANDLER(notifier == SEM_FAILED, errno, "Error opening notification semaphore");
-    }
+    sem_t* sem = get_sem(SEM_NAME, NUM_RESOURCES);
+    sem_t* notifier = get_sem(SEM_NOT_NAME, 2);
+    sem_t* sync = get_sem(SEM_SYNC_NAME, 0);
 
     /* Cleaning output file previously used */
     int fd = open(FILE_NAME, O_CREAT | O_TRUNC, 0640);
@@ -99,6 +97,12 @@ int main(int argc, char** argv) {
             exit(1);
         }
     }
+
+    /* Wait for all the proc to be ready */
+    printf("Waiting for processes to be ready\n");
+    for (i = 0; i < n; i++) sem_wait(sync);
+    printf("All processes are ready\n");
+
     notify_start(notifier);
     sleep(WAIT_TIME);
     notify_stop(notifier);
