@@ -22,7 +22,7 @@ sem_t* process_sem;
 void *thread_routine(void *args) {
 	
 	int ret = 0;
-		thread_args_t *thread_args = (thread_args_t*)args;
+	thread_args_t *thread_args = (thread_args_t*)args;
 	printf("[CHILD%d] thread %d avviato\n", thread_args->child_id, thread_args->thread_id);
 	
 	/** PARTE 1; COMPLETARE QUI SOTTO:
@@ -65,7 +65,7 @@ void child_routine(int child_id) {
 
 	 *shared_thread_var = 0;
 	 ret = sem_init(thread_sem, 0, 1);
-	//  ERROR_HELPER(ret, "Error initiating sem");
+	 ERROR_HELPER(ret, "Error initiating sem");
 	
 	pthread_t threads[N];
 	thread_args_t threads_args[N];
