@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include "heap.h"
 
-typedef heap_s {
+typedef struct heap_s {
 	int* heap_array;
 	int capacity;
 } heap_t;
 
-typedef heap_entry_s {
+typedef struct heap_entry_s {
 	int key;
 	int value;
 } heap_entry_t;
@@ -61,7 +61,12 @@ heap * array2heap(int * array, int size, HEAP_TYPE is_min_heap) {
 }
 
 void heap_print(heap * hh) {
-	return;
+	heap_t* heap = (heap_t*) hh;
+	int* array = heap->heap_array;
+	int i;
+	for (i = 0; i < heap->size && array[i] != 0; i++)
+		printf("%d ", array[i]);
+	printf("\n");
 }
 
 void heap_sort(int * array, int size) {
@@ -69,6 +74,6 @@ void heap_sort(int * array, int size) {
 }
 
 void heap_update_key(heap * hh, heap_entry * ee, int key) {
-	return;        
+	return;     
 }
 

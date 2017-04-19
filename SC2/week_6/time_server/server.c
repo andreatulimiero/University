@@ -31,6 +31,9 @@ void connection_handler(int socket_desc) {
      * - store the number of received bytes in recv_bytes
      */
 
+     recv_bytes = recv(socket_desc, recv_buf, recv_buf_len, 0);
+     ERROR_HELPER(recv_bytes, "Couldn't read from client");
+
     if (DEBUG) fprintf(stderr, "Message of %d bytes received\n", recv_bytes);
 
     // parse command received and write reply in send_buf
@@ -51,6 +54,9 @@ void connection_handler(int socket_desc) {
      * - send() with flags = 0 is equivalent to write() on a descriptor
      * - for now don't deal with messages partially sent
      */
+
+     ret = send(socket_desc, send_buf, server_message_len, 0);
+     ERROR_HELPER(ret, "Couldn't send the message to server");
 
     if (DEBUG) fprintf(stderr, "Message of %d bytes sent\n", ret);
 
