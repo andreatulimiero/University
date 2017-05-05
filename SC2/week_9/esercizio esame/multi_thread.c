@@ -2,7 +2,7 @@
 #include <semaphore.h>
 #include "common.h"
 
-#define BUFFER_LENGTH 500
+#define BUFFER_LENGTH 50
 #define THREAD_COUNT 10
 #define ITERATION_COUNT 50
 #define PROD_ROLE 0
@@ -44,12 +44,15 @@ void enqueue(int x) {
 
      ret = sem_wait(empty_sem);
      ERROR_HELPER(ret, "Error waiting empty_sem");
+     
      ret = sem_wait(write_sem);
      ERROR_HELPER(ret, "Error waiting write_sem");
      buffer[write_index % BUFFER_LENGTH] = x;
      write_index++;
+     
      ret = sem_post(write_sem);
      ERROR_HELPER(ret, "Error posting to write_sem");
+     
      ret = sem_post(fill_sem);
      ERROR_HELPER(ret, "Error posting to fill_sem");
 
@@ -69,8 +72,10 @@ int dequeue() {
      int ret;
      ret = sem_wait(fill_sem);
      ERROR_HELPER(ret, "Error waiting fill_sem");
+
      int value = buffer[read_index % BUFFER_LENGTH];
      ret = sem_post(empty_sem);
+     
      ERROR_HELPER(ret, "Error postin to empty_sem");
      read_index++;
      return value;
