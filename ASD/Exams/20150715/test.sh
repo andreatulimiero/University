@@ -1,0 +1,1 @@
+./main < bst.in
