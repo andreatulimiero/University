@@ -14,20 +14,34 @@ public class Tools {
         return false;
     }
 
-    private static NodeTree _leastCommonAncestor(NodeTree node, NodeTree u, NodeTree v){
-        if (!containsNode(node, u) || !containsNode(node, v)) return null;
-        NodeTree child = node.getFirstChild();
-        while (child != null) {
-            if (_leastCommonAncestor(child, u, v) != null) return _leastCommonAncestor(child, u, v);
-            child = child.getNextSibling();
+    private static NodeCount _leastCommonAncestor(NodeTree node, NodeTree u, NodeTree v){
+        if (node == null) return new NodeCount(0, null);
+        int count = 0;
+        for (NodeTree child = node.getFirstChild(); child != null; child = child.getNextSibling()) {
+            NodeCount nodeCount = _leastCommonAncestor(child, u, v);
+            if (nodeCount.node != null) return nodeCount;
+            count += nodeCount.count;
         }
-        return node;
+        if (node == u || node == v) count++;
+        if (count == 0) return new NodeCount(0, null);
+        else if (count == 1) return new NodeCount(1, null);
+        else return new NodeCount(2, node);
     }
 
     public static NodeTree leastCommonAncestor(NodeTree root, NodeTree u, NodeTree v) {
-        NodeTree ancestor = _leastCommonAncestor(root, u, v);
+        NodeTree ancestor = _leastCommonAncestor(root, u, v).node;
         if (ancestor == null) ancestor = root;
         return ancestor;
+    }
+
+    private static class NodeCount {
+        int count;
+        NodeTree node;
+
+        public NodeCount(int count, NodeTree node) {
+            this.count = count;
+            this.node = node;
+        }
     }
 
 }
