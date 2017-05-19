@@ -40,7 +40,7 @@ int search_key(bst_t* bst, int key) {
 }
 
 node_t* get_predecessor(node_t* node) {
-    if (node == NULL) return;
+    if (node == NULL) return NULL;
     if (node->right == NULL) return node;
     return get_predecessor(node->right);
 }
