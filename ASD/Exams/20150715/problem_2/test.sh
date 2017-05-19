@@ -1,1 +1,1 @@
-./main < bst.in
+./main < not_albero_bello.in
