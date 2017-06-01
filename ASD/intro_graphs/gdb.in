@@ -1,0 +1,4 @@
+break graph.c:124 if graph->type == DIRECTED && arch->from != node
+  commands
+    printf "%c -> %c\n", *((char*)arch->from->value), *((char*)arch->to->value)
+    end

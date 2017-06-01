@@ -1,12 +1,22 @@
 package model.attivita.atomiche;
 
+<<<<<<< HEAD
+=======
 import model.lega.EccezioneMolteplicita;
+>>>>>>> 47e16e0c86b7e440abff24e4249635d80eb0911b
 import model.lega.squadra.Squadra;
 import model.lega.giocatore.Giocatore;
 import model._framework.Task;
 
 import java.util.*;
 
+<<<<<<< HEAD
+import model.lega.EccezioneMolteplicita;
+
+public class CalcolaEtaMedia implements Task {
+
+}
+=======
 public class CalcolaEtaMedia implements Task {
 
     private Squadra squadra;
@@ -43,3 +53,4 @@ public class CalcolaEtaMedia implements Task {
     }
 
 }
+>>>>>>> 47e16e0c86b7e440abff24e4249635d80eb0911b

@@ -1,5 +1,15 @@
 package model.attivita.complesse;
 
+<<<<<<< HEAD
+import model.lega.squadra.Squadra;
+import model.lega.TipoLinkPartita;
+import model.attivita.atomiche.SegnaliIO;
+import model.attivita.atomiche.CalcolaEtaMedia;
+import model._framework.TaskExecutor;
+
+public class SottoramoSx implements Runnable {
+
+=======
 import controller.Controller;
 import model._framework.Task;
 import model._framework.TaskExecutor;
@@ -59,4 +69,5 @@ public class SottoramoSx implements Runnable {
 
     }
 
+>>>>>>> 47e16e0c86b7e440abff24e4249635d80eb0911b
 }

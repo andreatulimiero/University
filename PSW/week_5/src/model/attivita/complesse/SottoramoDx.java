@@ -5,6 +5,8 @@ import model.attivita.atomiche.CalcolaPartiteVinte;
 import model._framework.TaskExecutor;
 
 public class SottoramoDx implements Runnable {
+<<<<<<< HEAD
+=======
 
     private TipoLinkPartita tipoLinkPartita;
 
@@ -31,4 +33,5 @@ public class SottoramoDx implements Runnable {
         partiteVinteTrasferta = calcolaPartiteVinte.getVinteTrasferta();
     }
 
+>>>>>>> 47e16e0c86b7e440abff24e4249635d80eb0911b
 }

@@ -1,5 +1,15 @@
 package model.attivita.complesse;
 
+<<<<<<< HEAD
+import model.lega.TipoLinkPartita;
+import model.attivita.atomiche.SegnaliIO;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Set;
+
+public class AttivitaPrincipale implements Runnable {
+=======
 import controller.Controller;
 import model.lega.TipoLinkPartita;
 
@@ -48,4 +58,5 @@ public class AttivitaPrincipale implements Runnable {
                 sottoramoSx.getEtaMediaCasa(), sottoramoSx.getEtaMediaTrasferta());
     }
 
+>>>>>>> 47e16e0c86b7e440abff24e4249635d80eb0911b
 }
