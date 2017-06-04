@@ -1,0 +1,4 @@
+break AVL.c:16
+    commands
+        printf "(%d), left: %d, right: %d\n", node->key, left_height, right_height
+    end
