@@ -1,0 +1,18 @@
+bestSuggest(node x):
+    F <- sets containing friends of x, hence adjacent nodes
+    F = x.adjacent_nodes
+    for f in F: => deg(f)
+        FoF <- set containing friends of friends of x except friends of x and x
+        for fof in f.adjacent_nodes: => deg(fof)
+            if fof not in F:
+                FoF.add(fof)
+        max_common_friends = 0
+        best_suggest = null
+        for fof in FoF: => deg(fof)
+            common_friends = 0
+            for fofof in fof.adjacent_nodes: => deg(fofof)
+                if F.contains(fofof):
+                    common_friends += 1
+            if common_friends > max_common_friends:
+                max_common_friends = common_friends
+                best_suggest = fof
