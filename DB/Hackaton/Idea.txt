@@ -1,0 +1,16 @@
+Abbiamo messo in relazione il grado di digitalizzazione delle scuole nelle varie regioni italiani con 
+il grado di integrazione delle popolazioni straniere di queste
+
+La digitalizzazione delle scuole e' stata divisa in:
+- 0: scuole che possiedono un sito web, una PEC e una e-mail
+- 1: scuole che possiedono un sito web e una mail
+- 2: scuole che possiedono un sito web
+- 3: scuole che possiedono una mail
+- 4: scuole che non possiedono nulla
+
+La digitalizzazione generale e' stata calcolata effettuando una somma pesata, basata sul grado di 
+digitalizzazione delle singole scuole delle regioni:
+e.g: 10 scuole a digitalizzazione 0, 20 scuole a digitalizzazione 1 = 10*5+20*4 = 130
+
+Il livello d'integrazione di una regione e' data dalla percentuale di popolazione straniera rispetto
+alla popolazione totale
