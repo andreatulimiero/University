@@ -1,0 +1,39 @@
+/*
+*
+* Idea principale: parallelizzare esecuzione cicli
+*/
+
+// Versione serializzata
+void sum(float* a,
+         float* b,
+         float* c,
+         unsigned n) {
+    int i;
+    for (i = 0; i < n; i++) c[i] = a[i] + b[i];
+}
+
+// Versione OpenCL
+__kernel void sum(__global float* a,
+                  __global float* b,
+                  __global float* c) {
+    int i = get_global_id(0);
+    c[i] = a[i] + b[i];
+}
+
+
+/*
+* Concetti software nella programmazione OpenCL
+*
+* Modello di progammazione
+*     kernel = funzone OpenCL C che specifica operazione da svolgere in parallelo
+*     work-item = istanza di kernel (analogo a thread)
+*     work-group = gruppo di work-item, che hanno la garanzia di essere eseguiti concorrentemente 
+                   e condivideranno una cache comune
+* 
+* Modello di macchina:
+*     processing-item = elemento su cui gira un work-item (analogo a core)
+* 
+* Modello di memoria:
+* 
+*
+*/
